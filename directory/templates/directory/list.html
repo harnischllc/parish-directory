@@ -3,19 +3,18 @@
 {% block title %}Parish Directory{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="directory-container fade-in">
     <h1>Parish Directory</h1>
     
     {% if profiles %}
-        <div class="row">
+        <div class="profiles-grid">
             {% for profile in profiles %}
-                <div class="col-md-6 col-lg-4 mb-4">
+                <div class="profile-card">
                     <div class="card">
                         {% if profile.photo %}
                             <img src="{% url 'directory:protected_media' path=profile.photo.name %}" 
                                  class="card-img-top" 
-                                 alt="Profile photo"
-                                 style="height: 200px; object-fit: cover;">
+                                 alt="Profile photo">
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ profile.get_visible_name_display }}</h5>
