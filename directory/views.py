@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, JsonResponse
 from django.conf import settings
 from pathlib import Path
 from .models import Profile
 
-# Create your views here.
+def health_check(request):
+    """Health check endpoint for Render.com monitoring"""
+    return JsonResponse({"status": "ok"})
 
 @login_required
 def directory_list(request):
