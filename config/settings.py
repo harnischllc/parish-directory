@@ -148,8 +148,8 @@ AUTHENTICATION_BACKENDS = [
 
 # Allauth settings
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 LOGIN_REDIRECT_URL = '/directory/'
 SITE_ID = 1
 
