@@ -17,7 +17,7 @@ class FamilyAdmin(admin.ModelAdmin):
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'family', 'parish', 'opt_in_directory', 'approved', 'created_at')
-    list_filter = ('approved', 'opt_in_directory', 'parish')
+    list_filter = ('parish', 'opt_in_directory', 'approved')
     search_fields = ('user__email', 'user__first_name', 'user__last_name', 'family__name')
     readonly_fields = ('created_at',)
     

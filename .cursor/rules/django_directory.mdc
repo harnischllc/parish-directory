@@ -1,0 +1,13 @@
+---
+description: Rules for building the secure Django parish directory with image resizing and protected media.
+alwaysApply: true
+---
+You are working on a Django 5 project for a private parish directory.
+- Use django-allauth for email auth with mandatory verification.
+- Resizing: use Pillow, crop to 600×400 (landscape) or 400×600 (portrait), overwrite original, strip EXIF.
+- Serve media via a login-protected route; no public media URLs.
+- Settings must be environment-driven (django-environ), secure flags for prod, whitenoise for static.
+- Models: Parish, Family (slugify), Profile (OneToOne, opt_in_directory, approved, visible_name, photo).
+- Views: directory_list behind login, filter by approved + opt_in_directory, protected_media behind login.
+- Admin: ProfileAdmin filters for parish, opt_in_directory, approved.
+- Always keep code production-safe; disallow public indexing (robots.txt).

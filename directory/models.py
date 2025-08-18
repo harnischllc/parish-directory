@@ -4,14 +4,13 @@ from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 from PIL import Image, ImageOps
-from io import BytesIO
+from pathlib import Path
 
 User = get_user_model()
 
 
 def profile_photo_upload_path(instance, filename):
     """Generate upload path for profile photos: profiles/u<user_id>/<filename>"""
-    ext = os.path.splitext(filename)[1]
     return f"profiles/u{instance.user.id}/{filename}"
 
 
@@ -55,10 +54,10 @@ class Profile(models.Model):
     family = models.ForeignKey(Family, on_delete=models.SET_NULL, null=True, blank=True, related_name='profiles')
     phone = models.CharField(max_length=20, blank=True)
     address = models.TextField(blank=True)
+    visible_name = models.CharField(max_length=200, blank=True)
     photo = models.ImageField(upload_to=profile_photo_upload_path, blank=True, null=True)
     opt_in_directory = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
-    visible_name = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -86,27 +85,12 @@ class Profile(models.Model):
                 # Determine target dimensions based on orientation
                 width, height = img.size
                 if width >= height:  # Landscape
-                    target_width, target_height = 600, 400
-                    aspect_ratio = 600 / 400
+                    target_size = (600, 400)
                 else:  # Portrait
-                    target_width, target_height = 400, 600
-                    aspect_ratio = 400 / 600
+                    target_size = (400, 600)
                 
-                # Calculate crop dimensions to maintain aspect ratio
-                current_ratio = width / height
-                if current_ratio > aspect_ratio:
-                    # Image is wider than target ratio, crop width
-                    new_width = int(height * aspect_ratio)
-                    left = (width - new_width) // 2
-                    img = img.crop((left, 0, left + new_width, height))
-                elif current_ratio < aspect_ratio:
-                    # Image is taller than target ratio, crop height
-                    new_height = int(width / aspect_ratio)
-                    top = (height - new_height) // 2
-                    img = img.crop((0, top, width, top + new_height))
-                
-                # Resize to target dimensions using LANCZOS
-                img = img.resize((target_width, target_height), Image.Resampling.LANCZOS)
+                # Use ImageOps.fit to maintain aspect ratio and crop to exact dimensions
+                img = ImageOps.fit(img, target_size, method=Image.Resampling.LANCZOS)
                 
                 # Save over the original file with optimized JPEG settings
                 img.save(
