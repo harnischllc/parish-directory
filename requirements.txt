@@ -1,0 +1,7 @@
+Django>=5.0
+gunicorn
+whitenoise
+Pillow
+django-environ
+django-allauth
+psycopg[binary]

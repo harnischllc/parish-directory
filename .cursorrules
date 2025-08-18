@@ -1,0 +1,64 @@
+# Project: Parish Directory (Private, PII-sensitive)
+Goal: A secure, login-required parish directory where members opt-in, create profiles (individual + family), and upload a single photo (MVP). Photos must be auto-resized to 600×400 (landscape) or 400×600 (portrait), EXIF stripped, and the large original purged. Future: multiple photos, groups, messaging.
+
+## Hard Requirements (do not deviate)
+- Framework: **Django 5** (Python 3.11+), server-rendered HTML (Django templates).
+- DB: **PostgreSQL** in prod; **SQLite** allowed in dev.
+- Auth: **django-allauth** with **email/password** + **email verification mandatory**. (Leave Google/Facebook hooks to be added later.)
+- Security:
+  - Directory & media **behind login** (`@login_required`).
+  - Serve photos via a **protected route** (no public media URLs).
+  - Enforce HTTPS-only settings in prod (secure cookies, HSTS, SSL redirect).
+  - Throttle/lockout optional via `django-axes` (add stubs, off by default).
+- Images: **Pillow** for resize/crop + EXIF strip; overwrite the uploaded file (purge original).
+- Static: **whitenoise** for static in prod.
+- Config: **django-environ** for settings; no secrets in code.
+- Email: wire settings; provider credentials via env (SendGrid/SES/etc).
+- Hosting target: **Render.com** with a **persistent disk** mounted at `/opt/render/project/src/media`.
+
+## Deliverables (MVP)
+1) `requirements.txt` with:
+   - Django>=5.0, gunicorn, whitenoise, Pillow, django-environ, django-allauth, psycopg[binary]
+2) Django project `config/` and app `directory/`.
+3) Models:
+   - Parish(slug), Family(parish,name,slug), Profile(user one-to-one, parish, optional family, phone, address, photo, opt_in_directory, approved, visible_name).
+   - Profile.save(): open image, EXIF transpose, crop to aspect (600×400 or 400×600), resize, quality≈82, optimize, overwrite original.
+   - Upload path: `profiles/u<user_id>/<filename>`
+4) Forms/validation:
+   - Max upload size = 25MB (server-side validation).
+5) Views/URLs:
+   - `directory_list` (login required): show only `opt_in_directory=True` AND `approved=True` for the current parish.
+   - `protected_media` (login required): stream files from `MEDIA_ROOT` safely; no direct/static serving for photos.
+6) Templates:
+   - Base + a simple grid/list for the directory.
+   - Use `{% url 'protected_media' path=profile.photo.name %}` for images.
+7) Admin:
+   - `ProfileAdmin` list filters (approved/opt_in_directory/parish), search by user/family.
+8) Settings:
+   - Environment-driven via `django-environ`.
+   - allauth config (email verification mandatory, email required).
+   - Static & media paths; whitenoise middleware; security flags for prod.
+9) Robots:
+   - `robots.txt` disallow directory routes (prevent indexing).
+
+## Architecture & Conventions
+- Use Django MVT, keep views lean; data/logic in models & forms.
+- Prefer FBVs for simple pages (directory list, protected media).
+- Use `select_related/prefetch_related` for directory queries.
+- No SPA/React; vanilla Django templates for MVP.
+- Keep code PEP8; small, composable functions; docstrings for tricky bits.
+- Tests (basic): model save (image resize), directory filter (approved+opt_in), protected media requires auth.
+
+## Environment Targets
+- Dev (DEBUG=True, SQLite): local `.env`
+- Prod (DEBUG=False): Render Postgres, persistent disk:
+  - `MEDIA_ROOT=/opt/render/project/src/media`
+  - Start with `gunicorn config.wsgi:application --preload --bind 0.0.0.0:10000`
+  - Build: install reqs, collectstatic, migrate.
+
+## Guardrails for Cursor
+- Do NOT expose media via `django.views.static.serve` in prod.
+- Do NOT store secrets in repo. All secrets via env.
+- Do NOT create public endpoints for directory or photos.
+- Do NOT remove email verification or admin-approval gate.
+- Keep implementation minimal but production-safe.

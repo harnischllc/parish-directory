@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /directory/
+Disallow: /media/
+Disallow: /admin/
+Disallow: /accounts/
+
+# Allow static files and main pages
+Allow: /static/
+Allow: /$
+Allow: /about/
+Allow: /contact/

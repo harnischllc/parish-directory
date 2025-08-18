@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Parish Directory{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Parish Directory</h1>
+    
+    {% if profiles %}
+        <div class="row">
+            {% for profile in profiles %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card">
+                        {% if profile.photo %}
+                            <img src="{% url 'directory:protected_media' path=profile.photo.name %}" 
+                                 class="card-img-top" 
+                                 alt="Profile photo"
+                                 style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ profile.get_visible_name_display }}</h5>
+                            {% if profile.family %}
+                                <p class="card-text"><strong>Family:</strong> {{ profile.family.name }}</p>
+                            {% endif %}
+                            {% if profile.phone %}
+                                <p class="card-text"><strong>Phone:</strong> {{ profile.phone }}</p>
+                            {% endif %}
+                            {% if profile.address %}
+                                <p class="card-text"><strong>Address:</strong> {{ profile.address }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <p>No profiles are currently available in the directory.</p>
+            <p>Profiles must be approved and opted-in to appear here.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
