@@ -1,0 +1,13 @@
+<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="faviconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4A574;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C19660;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Church icon -->
+  <path d="M10 30 L10 20 L15 15 L20 20 L20 30 Z" fill="url(#faviconGradient)"/>
+  <rect x="12.5" y="30" width="5" height="2.5" fill="url(#faviconGradient)"/>
+  <circle cx="15" cy="17.5" r="1" fill="#1A2B4D"/>
+</svg>

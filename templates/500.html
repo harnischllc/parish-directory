@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+<div class="error-container fade-in">
+    <div class="error-card">
+        <div class="card">
+            <div class="card-header">
+                <h1>500</h1>
+                <h3>Server Error</h3>
+            </div>
+            <div class="card-body">
+                <p class="text-center">Something went wrong on our end. Please try again later.</p>
+                <div class="form-actions">
+                    <a href="{% url 'directory:directory_list' %}" class="btn btn-primary">Go to Directory</a>
+                    <a href="/" class="btn btn-secondary">Go Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

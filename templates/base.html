@@ -5,24 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Parish Directory{% endblock %}</title>
     {% load static %}
+    <link rel="icon" type="image/svg+xml" href="{% static 'assets/images/favicon.svg' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <a class="navbar-brand" href="/">Parish Directory</a>
-            <div class="navbar-nav">
-                {% if user.is_authenticated %}
-                    <span class="navbar-text">Welcome, {{ user.get_full_name|default:user.username }}</span>
-                    <a class="nav-link" href="{% url 'directory:directory_list' %}">Directory</a>
-                    <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-                {% else %}
-                    <a class="nav-link" href="{% url 'account_login' %}">Login</a>
-                    <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
-                {% endif %}
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="/">
+                    <img src="{% static 'assets/images/logo.svg' %}" alt="Parish Directory" class="logo-img">
+                </a>
             </div>
+            <nav class="main-nav">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'directory:directory_list' %}" class="nav-link">Directory</a>
+                    <a href="#" class="nav-link">Profile</a>
+                    <div class="account-dropdown">
+                        <span class="nav-link">Account</span>
+                        <div class="dropdown-content">
+                            <a href="{% url 'account_logout' %}">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="{% url 'account_login' %}" class="nav-link">Login</a>
+                    <a href="{% url 'account_signup' %}" class="nav-link">Sign Up</a>
+                {% endif %}
+            </nav>
         </div>
-    </nav>
+    </header>
 
     <main class="container">
         {% if messages %}
@@ -35,5 +45,11 @@
 
         {% block content %}{% endblock %}
     </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>&copy; 2025 Parish Directory. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>

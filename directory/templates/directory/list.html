@@ -19,13 +19,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ profile.get_visible_name_display }}</h5>
                             {% if profile.family %}
-                                <p class="card-text"><strong>Family:</strong> {{ profile.family.name }}</p>
-                            {% endif %}
-                            {% if profile.phone %}
-                                <p class="card-text"><strong>Phone:</strong> {{ profile.phone }}</p>
-                            {% endif %}
-                            {% if profile.address %}
-                                <p class="card-text"><strong>Address:</strong> {{ profile.address }}</p>
+                                <p class="card-text family-name">{{ profile.family.name }}</p>
                             {% endif %}
                         </div>
                     </div>
