@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Verify Your Email Address{% endblock %}
+
+{% block content %}
+<div class="auth-container fade-in">
+    <div class="auth-card">
+        <div class="card">
+            <div class="card-header">
+                <h3>Verify Your Email Address</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <p>We have sent an email to you for verification. Follow the link provided to finalize the signup process.</p>
+                    <p>If you do not see the verification email, check your spam folder.</p>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{% url 'account_login' %}" class="btn btn-primary">Sign In</a>
+                    <a href="{% url 'account_signup' %}" class="btn btn-secondary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
