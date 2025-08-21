@@ -26,6 +26,8 @@
                             <div class="form-error">{{ form.email.errors }}</div>
                         {% endif %}
                     </div>
+                    {# Username is not required; hide if not present #}
+                    {% if form.username %}
                     <div class="form-group">
                         <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
                         {{ form.username }}
@@ -33,6 +35,7 @@
                             <div class="form-error">{{ form.username.errors }}</div>
                         {% endif %}
                     </div>
+                    {% endif %}
                     <div class="form-group">
                         <label for="{{ form.password1.id_for_label }}" class="form-label">Password</label>
                         {{ form.password1 }}

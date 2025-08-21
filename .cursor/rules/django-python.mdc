@@ -1,0 +1,19 @@
+---
+description: "Django code patterns"
+globs:
+  - "**/*.py"
+alwaysApply: false
+---
+
+Django patterns to follow:
+- Auth: Use `django-allauth` for signup/login; email verification is mandatory.
+- Views: Prefer function‑based views for simple CRUD; use CBVs when built‑ins (ListView, DetailView) reduce boilerplate.
+- Forms: Server‑side validation; never trust client inputs; CSRF on all POST views.
+- Images: Use Pillow to resize to 600×400 or 400×600; strip EXIF; validate <=25MB.
+- Storage: Use filesystem MEDIA_ROOT with protected serving view; **never** embed base64 blobs in DB.
+- Querysets: Use `select_related/prefetch_related` when listing related objects.
+- Admin: Keep opt‑in approvals in Admin actions; log admin changes.
+
+CLI:
+- Make migrations & apply: `python manage.py makemigrations && python manage.py migrate`
+- Collect static: `python manage.py collectstatic --noinput`

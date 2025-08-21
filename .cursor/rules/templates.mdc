@@ -1,0 +1,12 @@
+---
+description: "Django templates & forms"
+globs:
+  - "templates/**/*.html"
+alwaysApply: false
+---
+
+Templates:
+- Use `{% url %}` and `{% static %}`; no hard‑coded domains.
+- Avoid complex logic; push business rules into views/forms.
+- Forms must include `{% csrf_token %}` and show server‑side errors.
+- Directory pages: never render private fields unless the view explicitly provides them.

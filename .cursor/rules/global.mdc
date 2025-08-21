@@ -1,0 +1,20 @@
+---
+description: "Project overview & guardrails (Always)"
+alwaysApply: true
+---
+
+You are working on **St. Edward Parish Directory**, a Django 5 app deployed on Render.
+
+Non‑negotiables (apply to all code & refactors):
+- **Privacy**: Directory is opt‑in. Assume all PII is sensitive. No public endpoints that expose user data. Never return emails/phones unless explicitly allowed by a view’s logic.
+- **Media security**: Photos must be EXIF‑stripped, stored under MEDIA_ROOT, and served via authenticated/protected views; do not generate public CDN URLs.
+- **Settings**: Production assumes `DEBUG=False`, HTTPS, secure cookies, HSTS; never print or log secrets or tokens.
+- **Migrations**: When you change models, create and run migrations.
+- **Performance**: Prefer N+1‑safe queryset patterns and pagination for list views.
+- **Testing**: When altering logic, add/adjust unit tests under `directory/tests/`.
+
+Style:
+- Python: Black/Ruff conventions; small, composable functions; explicit imports.
+- Templates: Escape by default; keep logic in views/forms, not Jinja/Django templates.
+
+When uncertain, propose a brief plan first, then implement.

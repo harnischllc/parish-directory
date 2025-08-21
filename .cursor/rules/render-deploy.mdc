@@ -1,0 +1,11 @@
+---
+description: "Render deploy playbook (use when editing procfiles/env)"
+alwaysApply: false
+---
+
+Render notes:
+- Build: `pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate`
+- Start: `gunicorn config.wsgi:application --preload --bind 0.0.0.0:10000`
+- Required env: `SECRET_KEY`, `ALLOWED_HOSTS`, `DATABASE_URL`, `MEDIA_ROOT=/opt/render/project/src/media`, email SMTP or API.
+- Attach a Persistent Disk at `/opt/render/project/src/media`.
+- Fail‑safe: If migrations fail on boot, print a friendly message and exit non‑zero; **do not** run dev servers in production.

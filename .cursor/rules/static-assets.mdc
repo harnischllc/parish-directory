@@ -1,0 +1,12 @@
+---
+description: "Static files, WhiteNoise, and asset hygiene"
+globs:
+  - "staticfiles/**/*"
+  - "**/*.css"
+  - "**/*.js"
+alwaysApply: false
+---
+
+- Use `whitenoise.storage.CompressedManifestStaticFilesStorage` patterns.
+- Cache‑bust via `{% static %}` (manifest).
+- No inline secrets or environment‑specific endpoints in JS.
